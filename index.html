@@ -2314,22 +2314,27 @@
         async function init() {
             createFireworks();
             
-            // Check for existing session
-            const savedSession = localStorage.getItem('gamehub_session');
-            if (savedSession) {
-                const session = JSON.parse(savedSession);
-                // Verify user still exists in database
-                const userSnapshot = await database.ref('users/' + session.odai).once('value');
-                if (userSnapshot.exists()) {
-                    currentUser = userSnapshot.val();
-                    currentUser.odai = session.odai;
-                    hideAuthModal();
-                    startApp();
+            try {
+                // Check for existing session
+                const savedSession = localStorage.getItem('gamehub_session');
+                if (savedSession) {
+                    const session = JSON.parse(savedSession);
+                    // Verify user still exists in database
+                    const userSnapshot = await database.ref('users/' + session.odai).once('value');
+                    if (userSnapshot.exists()) {
+                        currentUser = userSnapshot.val();
+                        currentUser.odai = session.odai;
+                        hideAuthModal();
+                        startApp();
+                    } else {
+                        localStorage.removeItem('gamehub_session');
+                        showAuthModal();
+                    }
                 } else {
-                    localStorage.removeItem('gamehub_session');
                     showAuthModal();
                 }
-            } else {
+            } catch (error) {
+                console.error('Init error:', error);
                 showAuthModal();
             }
             
@@ -2649,12 +2654,18 @@
 
         // Delete game
         async function deleteGame(gameId) {
+            event.preventDefault();
+            event.stopPropagation();
+            
             if (!confirm('Tem certeza que deseja excluir este jogo? Esta ação não pode ser desfeita.')) return;
             
             const game = games.find(g => g.id === gameId);
             if (game && game.authorId === currentUser.odai) {
                 try {
                     await database.ref('games/' + gameId).remove();
+                    // Remove from local array immediately for UI update
+                    games = games.filter(g => g.id !== gameId);
+                    renderGames();
                     showToast('Jogo excluído com sucesso!', 'success');
                 } catch (error) {
                     console.error('Error deleting game:', error);
@@ -2665,6 +2676,9 @@
 
         // Edit game modal
         function openEditGameModal(gameId) {
+            event.preventDefault();
+            event.stopPropagation();
+            
             const game = games.find(g => g.id === gameId);
             if (!game || game.authorId !== currentUser.odai) return;
             
@@ -2755,7 +2769,7 @@
 
         function filterGames(type) {
             document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event && event.target) event.target.classList.add('active');
             renderGames(type === 'all' ? games : games.filter(game => game.type === type));
         }
 
@@ -2809,8 +2823,10 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
 
         function switchCodeTab(type) {
             currentCodeTab = type;
-            document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
+            document.querySelectorAll('.code-tab').forEach(t => {
+                t.classList.remove('active');
+                if (t.textContent.toLowerCase().includes(type)) t.classList.add('active');
+            });
             document.getElementById('codeEditor').value = window.codeStore[type];
         }
 
@@ -2963,8 +2979,10 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
         // Sidebar tabs
         function switchSidebarTab(tab) {
             currentSidebarTab = tab;
-            document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
+            document.querySelectorAll('.sidebar-tab').forEach(t => {
+                t.classList.remove('active');
+                if (t.textContent.toLowerCase().includes(tab)) t.classList.add('active');
+            });
             
             const content = document.getElementById('sidebarContent');
             const isLiked = currentUser.likedGames && currentUser.likedGames.includes(currentGame.id);
@@ -3122,7 +3140,7 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
 
         function showProfileContent(type) {
             document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event && event.target) event.target.classList.add('active');
             
             const content = document.getElementById('profileContent');
             const userGames = games.filter(g => g.authorId === currentUser.odai);
