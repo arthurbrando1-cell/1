@@ -228,57 +228,29 @@
 
         .firework {
             position: absolute;
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            animation: fireworkExplode 2s ease-out infinite;
-        }
-
-        .firework::before,
-        .firework::after {
-            content: '';
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: inherit;
-        }
-
-        .firework::before {
-            animation: sparkle1 2s ease-out infinite;
-        }
-
-        .firework::after {
-            animation: sparkle2 2s ease-out infinite;
+            animation: fireworkExplode 1.5s ease-out forwards;
         }
 
         @keyframes fireworkExplode {
             0% { transform: scale(0); opacity: 1; }
-            50% { transform: scale(1); opacity: 0.8; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
-
-        @keyframes sparkle1 {
-            0% { transform: translate(0, 0); opacity: 1; }
-            100% { transform: translate(30px, -40px); opacity: 0; }
-        }
-
-        @keyframes sparkle2 {
-            0% { transform: translate(0, 0); opacity: 1; }
-            100% { transform: translate(-30px, -40px); opacity: 0; }
+            50% { transform: scale(1.5); opacity: 0.8; }
+            100% { transform: scale(2); opacity: 0; }
         }
 
         .spark {
             position: absolute;
-            width: 3px;
-            height: 3px;
+            width: 4px;
+            height: 4px;
             border-radius: 50%;
-            animation: sparkFly 1.5s ease-out infinite;
+            animation: sparkFly 1.2s ease-out forwards;
         }
 
         @keyframes sparkFly {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-100px) scale(0); opacity: 0; }
+            0% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-80px) scale(0.5); }
         }
 
         /* New Year Celebration Overlay */
@@ -318,13 +290,12 @@
         }
 
         .celebration-year {
-            font-size: 12rem;
+            font-size: 10rem;
             font-weight: 900;
             background: linear-gradient(135deg, var(--gold), var(--white), var(--silver), var(--gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: none;
             filter: drop-shadow(0 0 50px rgba(212, 175, 55, 0.5));
             line-height: 1;
             animation: yearGlow 1s ease-in-out infinite alternate;
@@ -336,7 +307,7 @@
         }
 
         .celebration-text {
-            font-size: 3.5rem;
+            font-size: 3rem;
             font-weight: 700;
             color: var(--white);
             margin-bottom: 1rem;
@@ -851,16 +822,6 @@
             align-items: center;
         }
 
-        .rating {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .stars {
-            color: var(--gold);
-        }
-
         .plays {
             font-size: 0.85rem;
             opacity: 0.7;
@@ -1024,15 +985,6 @@
             background: var(--light);
         }
 
-        .action-btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .action-btn-danger:hover {
-            opacity: 0.9;
-        }
-
         .preview-frame {
             flex: 1;
             background: #ffffff;
@@ -1117,7 +1069,6 @@
             position: relative;
         }
 
-        .game-canvas-container canvas, 
         .game-canvas-container iframe {
             width: 100%;
             height: 100%;
@@ -1160,34 +1111,6 @@
             overflow-y: auto;
             padding: 1rem;
             background: var(--white);
-        }
-
-        /* Rating System */
-        .rating-container {
-            text-align: center;
-            padding: 1.5rem;
-        }
-
-        .rating-stars {
-            font-size: 2.5rem;
-            margin: 1rem 0;
-        }
-
-        .rating-stars span {
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: rgba(0, 0, 0, 0.2);
-        }
-
-        .rating-stars span:hover,
-        .rating-stars span.active {
-            transform: scale(1.2);
-            color: var(--gold);
-        }
-
-        .rating-count {
-            opacity: 0.6;
-            font-size: 0.9rem;
         }
 
         /* Like Button */
@@ -1652,7 +1575,7 @@
             margin: 0 auto;
         }
 
-        /* Saved Games Section */
+        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 4rem 2rem;
@@ -1975,10 +1898,10 @@
                     <button><i class="fas fa-search"></i></button>
                 </div>
                 <div class="filter-tabs">
-                    <button class="filter-tab active" onclick="filterGames('all')">
+                    <button class="filter-tab active" onclick="filterGames('all', this)">
                         <i class="fas fa-layer-group"></i> Todos
                     </button>
-                    <button class="filter-tab" onclick="filterGames('game')">
+                    <button class="filter-tab" onclick="filterGames('game', this)">
                         <i class="fas fa-gamepad"></i> Jogos
                     </button>
                 </div>
@@ -2001,13 +1924,13 @@
             <div class="editor-container">
                 <div class="code-panel">
                     <div class="code-tabs">
-                        <button class="code-tab active" onclick="switchCodeTab('html')">
+                        <button class="code-tab active" onclick="switchCodeTab('html', this)">
                             <i class="fab fa-html5"></i> HTML
                         </button>
-                        <button class="code-tab" onclick="switchCodeTab('css')">
+                        <button class="code-tab" onclick="switchCodeTab('css', this)">
                             <i class="fab fa-css3-alt"></i> CSS
                         </button>
-                        <button class="code-tab" onclick="switchCodeTab('js')">
+                        <button class="code-tab" onclick="switchCodeTab('js', this)">
                             <i class="fab fa-js"></i> JavaScript
                         </button>
                     </div>
@@ -2084,10 +2007,10 @@
                 </div>
                 
                 <div class="profile-tabs">
-                    <button class="profile-tab active" onclick="showProfileContent('my-games')">
+                    <button class="profile-tab active" onclick="showProfileContent('my-games', this)">
                         <i class="fas fa-gamepad"></i> Meus Jogos
                     </button>
-                    <button class="profile-tab" onclick="showProfileContent('edit')">
+                    <button class="profile-tab" onclick="showProfileContent('edit', this)">
                         <i class="fas fa-user-edit"></i> Editar Perfil
                     </button>
                 </div>
@@ -2121,10 +2044,10 @@
             </div>
             <div class="game-sidebar">
                 <div class="sidebar-tabs">
-                    <button class="sidebar-tab active" onclick="switchSidebarTab('info')">
+                    <button class="sidebar-tab active" onclick="switchSidebarTab('info', this)">
                         <i class="fas fa-info-circle"></i> Info
                     </button>
-                    <button class="sidebar-tab" onclick="switchSidebarTab('comments')">
+                    <button class="sidebar-tab" onclick="switchSidebarTab('comments', this)">
                         <i class="fas fa-comments"></i> Chat
                     </button>
                 </div>
@@ -2304,6 +2227,8 @@
         let editingGameId = null;
         let newYearShown = false;
         let isFullscreen = false;
+        let tempAvatar = null;
+        let tempBanner = null;
 
         // Generate UID
         function generateUID() {
@@ -2315,11 +2240,9 @@
             createFireworks();
             
             try {
-                // Check for existing session
                 const savedSession = localStorage.getItem('gamehub_session');
                 if (savedSession) {
                     const session = JSON.parse(savedSession);
-                    // Verify user still exists in database
                     const userSnapshot = await database.ref('users/' + session.odai).once('value');
                     if (userSnapshot.exists()) {
                         currentUser = userSnapshot.val();
@@ -2368,7 +2291,6 @@
             authError.classList.remove('show');
             
             try {
-                // Check if username already exists
                 const usersSnapshot = await database.ref('users').once('value');
                 const users = usersSnapshot.val() || {};
                 
@@ -2384,15 +2306,11 @@
                 }
                 
                 if (existingUser) {
-                    // User exists, log them in
                     currentUser = existingUser;
                     currentUser.odai = existingUid;
-                    
                     localStorage.setItem('gamehub_session', JSON.stringify({ odai: existingUid }));
-                    
                     showToast(`Bem-vindo de volta, ${currentUser.name}!`, 'success');
                 } else {
-                    // Create new user
                     const newUid = generateUID();
                     const newUser = {
                         name: username,
@@ -2406,7 +2324,6 @@
                     };
                     
                     await database.ref('users/' + newUid).set(newUser);
-                    
                     currentUser = newUser;
                     localStorage.setItem('gamehub_session', JSON.stringify({ odai: newUid }));
                     
@@ -2459,17 +2376,20 @@
 
         // Setup realtime listeners for Firebase
         function setupRealtimeListeners() {
-            // Listen for games changes
             database.ref('games').on('value', (snapshot) => {
                 const data = snapshot.val();
                 games = data ? Object.entries(data).map(([id, game]) => ({ ...game, id })) : [];
                 games.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
                 renderGames();
+                updateProfileUI();
             });
             
-            // Listen for users changes
             database.ref('users').on('value', (snapshot) => {
                 allUsers = snapshot.val() || {};
+                // Update current user data
+                if (currentUser && allUsers[currentUser.odai]) {
+                    currentUser = { ...allUsers[currentUser.odai], odai: currentUser.odai };
+                }
             });
         }
 
@@ -2510,31 +2430,39 @@
             const colors = ['#d4af37', '#c0c0c0', '#ffd700', '#e5e4e2', '#f0e68c'];
             
             function createFirework() {
+                const x = Math.random() * 100;
+                const y = Math.random() * 60 + 10;
+                
                 const firework = document.createElement('div');
                 firework.className = 'firework';
-                firework.style.left = Math.random() * 100 + '%';
-                firework.style.top = Math.random() * 60 + 20 + '%';
+                firework.style.left = x + '%';
+                firework.style.top = y + '%';
                 firework.style.background = colors[Math.floor(Math.random() * colors.length)];
-                firework.style.animationDelay = Math.random() * 2 + 's';
                 container.appendChild(firework);
                 
-                for (let i = 0; i < 8; i++) {
+                // Create sparks
+                for (let i = 0; i < 12; i++) {
                     const spark = document.createElement('div');
                     spark.className = 'spark';
-                    spark.style.left = firework.style.left;
-                    spark.style.top = firework.style.top;
+                    spark.style.left = x + '%';
+                    spark.style.top = y + '%';
                     spark.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    spark.style.animationDelay = (Math.random() * 0.5 + 0.5) + 's';
-                    spark.style.transform = `rotate(${i * 45}deg)`;
-                    container.appendChild(spark);
                     
-                    setTimeout(() => spark.remove(), 2000);
+                    const angle = (i / 12) * Math.PI * 2;
+                    const distance = 30 + Math.random() * 40;
+                    spark.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                    spark.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+                    spark.style.animation = `sparkFly 1.2s ease-out forwards`;
+                    spark.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
+                    
+                    container.appendChild(spark);
+                    setTimeout(() => spark.remove(), 1200);
                 }
                 
-                setTimeout(() => firework.remove(), 2500);
+                setTimeout(() => firework.remove(), 1500);
             }
             
-            setInterval(createFirework, 800);
+            setInterval(createFirework, 600);
         }
 
         // Countdown timer
@@ -2586,18 +2514,18 @@
             } else {
                 emptyState.style.display = 'none';
                 grid.innerHTML = gamesToRender.map(game => {
-                    const isOwner = game.authorId === currentUser.odai;
-                    const isLiked = currentUser.likedGames && currentUser.likedGames.includes(game.id);
+                    const isOwner = currentUser && game.authorId === currentUser.odai;
+                    const isLiked = currentUser && currentUser.likedGames && currentUser.likedGames.includes(game.id);
                     const likeCount = game.likes || 0;
                     
                     return `
                     <div class="game-card" onclick="openGame('${game.id}')">
                         ${isOwner ? `
                         <div class="game-card-actions" onclick="event.stopPropagation()">
-                            <button class="game-card-action" onclick="openEditGameModal('${game.id}')" title="Editar">
+                            <button class="game-card-action" onclick="event.stopPropagation(); openEditGameModal('${game.id}')" title="Editar">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="game-card-action delete" onclick="deleteGame('${game.id}')" title="Excluir">
+                            <button class="game-card-action delete" onclick="event.stopPropagation(); deleteGame('${game.id}')" title="Excluir">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
@@ -2635,37 +2563,39 @@
 
         // Like system
         async function toggleLike(gameId) {
+            if (!currentUser) return;
             if (!currentUser.likedGames) currentUser.likedGames = [];
             
             const likeIndex = currentUser.likedGames.indexOf(gameId);
+            const gameRef = database.ref(`games/${gameId}/likes`);
             
-            if (likeIndex === -1) {
-                currentUser.likedGames.push(gameId);
-                await database.ref(`games/${gameId}/likes`).transaction(likes => (likes || 0) + 1);
-                showToast('Você curtiu este jogo!', 'success');
-            } else {
-                currentUser.likedGames.splice(likeIndex, 1);
-                await database.ref(`games/${gameId}/likes`).transaction(likes => Math.max((likes || 1) - 1, 0));
-                showToast('Like removido', 'info');
+            try {
+                if (likeIndex === -1) {
+                    currentUser.likedGames.push(gameId);
+                    await gameRef.transaction(likes => (likes || 0) + 1);
+                    showToast('Você curtiu este jogo!', 'success');
+                } else {
+                    currentUser.likedGames.splice(likeIndex, 1);
+                    await gameRef.transaction(likes => Math.max((likes || 1) - 1, 0));
+                    showToast('Like removido', 'info');
+                }
+                
+                await database.ref(`users/${currentUser.odai}/likedGames`).set(currentUser.likedGames);
+                renderGames();
+            } catch (error) {
+                console.error('Error toggling like:', error);
+                showToast('Erro ao curtir', 'error');
             }
-            
-            await database.ref(`users/${currentUser.odai}/likedGames`).set(currentUser.likedGames);
         }
 
         // Delete game
         async function deleteGame(gameId) {
-            event.preventDefault();
-            event.stopPropagation();
-            
             if (!confirm('Tem certeza que deseja excluir este jogo? Esta ação não pode ser desfeita.')) return;
             
             const game = games.find(g => g.id === gameId);
             if (game && game.authorId === currentUser.odai) {
                 try {
                     await database.ref('games/' + gameId).remove();
-                    // Remove from local array immediately for UI update
-                    games = games.filter(g => g.id !== gameId);
-                    renderGames();
                     showToast('Jogo excluído com sucesso!', 'success');
                 } catch (error) {
                     console.error('Error deleting game:', error);
@@ -2676,9 +2606,6 @@
 
         // Edit game modal
         function openEditGameModal(gameId) {
-            event.preventDefault();
-            event.stopPropagation();
-            
             const game = games.find(g => g.id === gameId);
             if (!game || game.authorId !== currentUser.odai) return;
             
@@ -2686,7 +2613,7 @@
             editCoverImage = game.cover;
             
             document.getElementById('editGameTitle').value = game.title;
-            document.getElementById('editGameDescription').value = game.description;
+            document.getElementById('editGameDescription').value = game.description || '';
             document.getElementById('editGameTags').value = (game.tags || []).join(', ');
             
             const preview = document.getElementById('editCoverPreview');
@@ -2739,15 +2666,13 @@
                 return;
             }
             
-            const updates = {
-                title: title,
-                description: description || 'Um jogo incrível!',
-                tags: tagsInput ? tagsInput.split(',').map(t => t.trim()).filter(t => t) : ['Jogo'],
-                cover: editCoverImage || null
-            };
-            
             try {
-                await database.ref('games/' + editingGameId).update(updates);
+                await database.ref('games/' + editingGameId).update({
+                    title: title,
+                    description: description || 'Um jogo incrível!',
+                    tags: tagsInput ? tagsInput.split(',').map(t => t.trim()).filter(t => t) : ['Jogo'],
+                    cover: editCoverImage || null
+                });
                 closeEditGameModal();
                 showToast('Jogo atualizado com sucesso!', 'success');
             } catch (error) {
@@ -2761,15 +2686,15 @@
             const query = document.getElementById('searchInput').value.toLowerCase();
             const filtered = games.filter(game => 
                 game.title.toLowerCase().includes(query) ||
-                game.description.toLowerCase().includes(query) ||
+                (game.description && game.description.toLowerCase().includes(query)) ||
                 (game.tags || []).some(tag => tag.toLowerCase().includes(query))
             );
             renderGames(filtered);
         }
 
-        function filterGames(type) {
+        function filterGames(type, btn) {
             document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-            if (event && event.target) event.target.classList.add('active');
+            if (btn) btn.classList.add('active');
             renderGames(type === 'all' ? games : games.filter(game => game.type === type));
         }
 
@@ -2821,12 +2746,10 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
             document.getElementById('codeEditor').value = defaultHTML;
         }
 
-        function switchCodeTab(type) {
+        function switchCodeTab(type, btn) {
             currentCodeTab = type;
-            document.querySelectorAll('.code-tab').forEach(t => {
-                t.classList.remove('active');
-                if (t.textContent.toLowerCase().includes(type)) t.classList.add('active');
-            });
+            document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+            if (btn) btn.classList.add('active');
             document.getElementById('codeEditor').value = window.codeStore[type];
         }
 
@@ -2915,8 +2838,7 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
             };
             
             try {
-                const newGameRef = database.ref('games').push();
-                await newGameRef.set(newGame);
+                await database.ref('games').push(newGame);
                 closePublishModal();
                 showToast('Jogo publicado com sucesso!', 'success');
                 navigateTo('library');
@@ -2931,7 +2853,6 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
             currentGame = games.find(g => g.id === gameId);
             if (!currentGame) return;
             
-            // Increment plays
             await database.ref(`games/${gameId}/plays`).transaction(plays => (plays || 0) + 1);
             
             document.getElementById('modalGameTitle').innerHTML = `<i class="fas fa-gamepad"></i> ${currentGame.title}`;
@@ -2963,7 +2884,7 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
         }
 
         async function saveGameToFavorites() {
-            if (!currentGame) return;
+            if (!currentGame || !currentUser) return;
             
             if (!currentUser.savedGames) currentUser.savedGames = [];
             
@@ -2977,17 +2898,22 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
         }
 
         // Sidebar tabs
-        function switchSidebarTab(tab) {
+        function switchSidebarTab(tab, btn) {
             currentSidebarTab = tab;
-            document.querySelectorAll('.sidebar-tab').forEach(t => {
-                t.classList.remove('active');
-                if (t.textContent.toLowerCase().includes(tab)) t.classList.add('active');
-            });
+            document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            else document.querySelector(`.sidebar-tab:first-child`).classList.add('active');
             
+            renderSidebarContent();
+        }
+
+        function renderSidebarContent() {
             const content = document.getElementById('sidebarContent');
-            const isLiked = currentUser.likedGames && currentUser.likedGames.includes(currentGame.id);
+            if (!currentGame) return;
             
-            if (tab === 'info') {
+            const isLiked = currentUser && currentUser.likedGames && currentUser.likedGames.includes(currentGame.id);
+            
+            if (currentSidebarTab === 'info') {
                 content.innerHTML = `
                     <div class="like-section">
                         <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleLikeInModal()">
@@ -2996,14 +2922,14 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
                         <div class="like-count"><i class="fas fa-heart"></i> ${currentGame.likes || 0} curtidas</div>
                     </div>
                     <div style="padding: 1rem;">
-                        <p style="line-height: 1.6; opacity: 0.9; margin-bottom: 1.5rem;">${currentGame.description}</p>
+                        <p style="line-height: 1.6; opacity: 0.9; margin-bottom: 1.5rem;">${currentGame.description || 'Sem descrição'}</p>
                         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
                             ${(currentGame.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('')}
                         </div>
                         <div style="background: var(--light); padding: 1rem; border-radius: 10px; border: 1px solid var(--glass-border);">
                             <div style="display: flex; align-items: center; gap: 0.8rem;">
                                 <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg, var(--gold), var(--primary));display:flex;align-items:center;justify-content:center;font-weight:600;color:white;overflow:hidden;">
-                                    ${currentGame.authorAvatar ? `<img src="${currentGame.authorAvatar}" style="width:100%;height:100%;object-fit:cover;">` : currentGame.author[0]}
+                                    ${currentGame.authorAvatar ? `<img src="${currentGame.authorAvatar}" style="width:100%;height:100%;object-fit:cover;">` : (currentGame.author ? currentGame.author[0] : 'U')}
                                 </div>
                                 <div>
                                     <div style="font-weight:600;">${currentGame.author}</div>
@@ -3013,7 +2939,7 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
                         </div>
                         <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
                             <div style="text-align: center; flex: 1; background: var(--light); padding: 1rem; border-radius: 10px;">
-                                <div style="font-size: 1.5rem; color: var(--gold);">${currentGame.plays}</div>
+                                <div style="font-size: 1.5rem; color: var(--gold);">${currentGame.plays || 0}</div>
                                 <div style="font-size: 0.8rem; opacity: 0.6;"><i class="fas fa-play"></i> Plays</div>
                             </div>
                             <div style="text-align: center; flex: 1; background: var(--light); padding: 1rem; border-radius: 10px;">
@@ -3023,30 +2949,28 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
                         </div>
                     </div>
                 `;
-            } else if (tab === 'comments') {
+            } else if (currentSidebarTab === 'comments') {
                 const comments = currentGame.comments || [];
-                const commentsHTML = comments.map(c => `
-                    <div class="comment">
-                        <div class="comment-header">
-                            <div class="comment-avatar">
-                                ${c.authorAvatar ? `<img src="${c.authorAvatar}">` : c.author[0]}
-                            </div>
-                            <div>
-                                <div class="comment-author">${c.author} <span class="comment-uid">#${c.authorId}</span></div>
-                                <div class="comment-date"><i class="far fa-calendar"></i> ${c.date}</div>
-                            </div>
-                        </div>
-                        <div class="comment-text">${c.text}</div>
-                    </div>
-                `).join('');
-                
                 content.innerHTML = `
                     <div class="comment-form">
                         <textarea id="commentInput" placeholder="Escreva um comentário..."></textarea>
                         <button onclick="addComment()"><i class="fas fa-paper-plane"></i> Comentar</button>
                     </div>
                     <div class="comments-list">
-                        ${commentsHTML || '<p style="text-align:center;opacity:0.6;padding:2rem;"><i class="far fa-comment-dots"></i> Seja o primeiro a comentar!</p>'}
+                        ${comments.length > 0 ? comments.map(c => `
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <div class="comment-avatar">
+                                        ${c.authorAvatar ? `<img src="${c.authorAvatar}">` : (c.author ? c.author[0] : 'U')}
+                                    </div>
+                                    <div>
+                                        <div class="comment-author">${c.author} <span class="comment-uid">#${c.authorId}</span></div>
+                                        <div class="comment-date"><i class="far fa-calendar"></i> ${c.date}</div>
+                                    </div>
+                                </div>
+                                <div class="comment-text">${c.text}</div>
+                            </div>
+                        `).join('') : '<p style="text-align:center;opacity:0.6;padding:2rem;"><i class="far fa-comment-dots"></i> Seja o primeiro a comentar!</p>'}
                     </div>
                 `;
             }
@@ -3062,7 +2986,7 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
                 currentGame = { ...gameSnapshot.val(), id: currentGame.id };
             }
             
-            switchSidebarTab('info');
+            renderSidebarContent();
         }
 
         async function addComment() {
@@ -3074,7 +2998,7 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
                 return;
             }
             
-            if (currentGame) {
+            if (currentGame && currentUser) {
                 const newComment = {
                     author: currentUser.name,
                     authorId: currentUser.odai,
@@ -3091,7 +3015,7 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
                     currentGame.comments = comments;
                     input.value = '';
                     showToast('Comentário adicionado!', 'success');
-                    switchSidebarTab('comments');
+                    renderSidebarContent();
                 } catch (error) {
                     console.error('Error adding comment:', error);
                     showToast('Erro ao adicionar comentário', 'error');
@@ -3107,26 +3031,28 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
             if (currentUser.avatar) {
                 navAvatar.innerHTML = `<img src="${currentUser.avatar}" alt="Avatar">`;
             } else {
-                navAvatar.innerHTML = `<span id="navAvatarText">${currentUser.name[0]}</span>`;
+                navAvatar.innerHTML = `<span>${currentUser.name ? currentUser.name[0] : 'U'}</span>`;
             }
             
-            document.getElementById('navUserName').textContent = currentUser.name;
-            document.getElementById('navUserUid').textContent = '#' + currentUser.odai;
+            document.getElementById('navUserName').textContent = currentUser.name || 'Usuário';
+            document.getElementById('navUserUid').textContent = '#' + (currentUser.odai || '000000');
             
             const profileAvatar = document.getElementById('profileAvatar');
             if (currentUser.avatar) {
                 profileAvatar.innerHTML = `<img src="${currentUser.avatar}" alt="Avatar"><div class="profile-avatar-edit"><i class="fas fa-camera"></i></div>`;
             } else {
-                profileAvatar.innerHTML = `<span id="profileAvatarText">${currentUser.name[0]}</span><div class="profile-avatar-edit"><i class="fas fa-camera"></i></div>`;
+                profileAvatar.innerHTML = `<span>${currentUser.name ? currentUser.name[0] : 'U'}</span><div class="profile-avatar-edit"><i class="fas fa-camera"></i></div>`;
             }
             
             const profileBanner = document.getElementById('profileBanner');
             if (currentUser.banner) {
                 profileBanner.innerHTML = `<img src="${currentUser.banner}" alt="Banner"><div class="profile-banner-edit" onclick="openBannerUpload()"><i class="fas fa-camera"></i> Alterar Banner</div>`;
+            } else {
+                profileBanner.innerHTML = `<div class="profile-banner-edit" onclick="openBannerUpload()"><i class="fas fa-camera"></i> Alterar Banner</div>`;
             }
             
-            document.getElementById('profileName').textContent = currentUser.name;
-            document.getElementById('profileUid').textContent = '#' + currentUser.odai;
+            document.getElementById('profileName').textContent = currentUser.name || 'Usuário';
+            document.getElementById('profileUid').textContent = '#' + (currentUser.odai || '000000');
             document.getElementById('profileBio').textContent = currentUser.bio || 'Novo usuário do GameHub';
             
             const userGames = games.filter(g => g.authorId === currentUser.odai);
@@ -3138,9 +3064,9 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
             document.getElementById('statLikes').textContent = totalLikes;
         }
 
-        function showProfileContent(type) {
+        function showProfileContent(type, btn) {
             document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
-            if (event && event.target) event.target.classList.add('active');
+            if (btn) btn.classList.add('active');
             
             const content = document.getElementById('profileContent');
             const userGames = games.filter(g => g.authorId === currentUser.odai);
@@ -3203,10 +3129,14 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
             if (file) {
                 const reader = new FileReader();
                 reader.onload = async function(e) {
-                    currentUser.avatar = e.target.result;
-                    await database.ref(`users/${currentUser.odai}/avatar`).set(currentUser.avatar);
-                    updateProfileUI();
-                    showToast('Foto de perfil atualizada!', 'success');
+                    try {
+                        await database.ref(`users/${currentUser.odai}/avatar`).set(e.target.result);
+                        currentUser.avatar = e.target.result;
+                        updateProfileUI();
+                        showToast('Foto de perfil atualizada!', 'success');
+                    } catch (error) {
+                        showToast('Erro ao atualizar foto', 'error');
+                    }
                 };
                 reader.readAsDataURL(file);
             }
@@ -3217,16 +3147,23 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
             if (file) {
                 const reader = new FileReader();
                 reader.onload = async function(e) {
-                    currentUser.banner = e.target.result;
-                    await database.ref(`users/${currentUser.odai}/banner`).set(currentUser.banner);
-                    updateProfileUI();
-                    showToast('Banner atualizado!', 'success');
+                    try {
+                        await database.ref(`users/${currentUser.odai}/banner`).set(e.target.result);
+                        currentUser.banner = e.target.result;
+                        updateProfileUI();
+                        showToast('Banner atualizado!', 'success');
+                    } catch (error) {
+                        showToast('Erro ao atualizar banner', 'error');
+                    }
                 };
                 reader.readAsDataURL(file);
             }
         }
 
         function openEditProfile() {
+            tempAvatar = currentUser.avatar;
+            tempBanner = currentUser.banner;
+            
             document.getElementById('editBio').value = currentUser.bio || '';
             document.getElementById('avatarUrlInput').value = '';
             document.getElementById('bannerUrlInput').value = '';
@@ -3237,12 +3174,13 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
             const bannerPreview = document.getElementById('editBannerPreview');
             bannerPreview.innerHTML = currentUser.banner ? `<img src="${currentUser.banner}">` : '<i class="fas fa-image"></i><span>Clique para alterar</span>';
             
-            document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
             document.getElementById('editProfileModal').classList.add('active');
         }
 
         function closeEditProfile() {
             document.getElementById('editProfileModal').classList.remove('active');
+            tempAvatar = null;
+            tempBanner = null;
         }
 
         function handleAvatarUpload(event) {
@@ -3250,7 +3188,7 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    currentUser.avatar = e.target.result;
+                    tempAvatar = e.target.result;
                     document.getElementById('editAvatarPreview').innerHTML = `<img src="${e.target.result}">`;
                 };
                 reader.readAsDataURL(file);
@@ -3262,7 +3200,7 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    currentUser.banner = e.target.result;
+                    tempBanner = e.target.result;
                     document.getElementById('editBannerPreview').innerHTML = `<img src="${e.target.result}">`;
                 };
                 reader.readAsDataURL(file);
@@ -3272,7 +3210,7 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
         function applyAvatarURL() {
             const url = document.getElementById('avatarUrlInput').value.trim();
             if (url) {
-                currentUser.avatar = url;
+                tempAvatar = url;
                 document.getElementById('editAvatarPreview').innerHTML = `<img src="${url}">`;
                 document.getElementById('avatarUrlInput').value = '';
                 showToast('Imagem aplicada!', 'success');
@@ -3282,7 +3220,7 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
         function applyBannerURL() {
             const url = document.getElementById('bannerUrlInput').value.trim();
             if (url) {
-                currentUser.banner = url;
+                tempBanner = url;
                 document.getElementById('editBannerPreview').innerHTML = `<img src="${url}">`;
                 document.getElementById('bannerUrlInput').value = '';
                 showToast('Imagem aplicada!', 'success');
@@ -3292,14 +3230,16 @@ ctx.fillText('Olá, GameHub!', 200, 250);`;
         async function saveProfile() {
             const bio = document.getElementById('editBio').value.trim();
             
-            currentUser.bio = bio;
-            
             try {
                 await database.ref(`users/${currentUser.odai}`).update({
-                    bio: currentUser.bio,
-                    avatar: currentUser.avatar,
-                    banner: currentUser.banner
+                    bio: bio || 'Novo usuário do GameHub',
+                    avatar: tempAvatar || null,
+                    banner: tempBanner || null
                 });
+                
+                currentUser.bio = bio || 'Novo usuário do GameHub';
+                currentUser.avatar = tempAvatar;
+                currentUser.banner = tempBanner;
                 
                 updateProfileUI();
                 closeEditProfile();
