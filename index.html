@@ -3,42 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meu Link</title>
+<title>Mini LinkHub</title>
 
 <style>
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #0f0f0f, #1e1e2f);
+  background: linear-gradient(135deg, #0f0f0f, #1c1c2e);
   color: white;
   text-align: center;
 }
 
 .container {
-  margin-top: 60px;
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
 }
 
 img {
   width: 120px;
+  height: 120px;
   border-radius: 50%;
+  object-fit: cover;
   border: 3px solid #00ffcc;
+  margin-top: 20px;
 }
 
-h1 {
-  margin: 15px 0;
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #00ffcc;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
 }
 
 .link {
   display: block;
-  margin: 15px auto;
-  padding: 15px;
-  width: 250px;
+  margin: 10px auto;
+  padding: 12px;
   background: #00ffcc;
   color: black;
   text-decoration: none;
-  border-radius: 30px;
+  border-radius: 20px;
   font-weight: bold;
-  transition: 0.3s;
 }
 
 .link:hover {
@@ -46,18 +63,88 @@ h1 {
 }
 </style>
 </head>
-
 <body>
 
 <div class="container">
-  <img src="https://via.placeholder.com/120" alt="Foto">
-  <h1>Seu Nome</h1>
-  <p>Criador de Conteúdo sobre IA 🚀</p>
+  <h2>Crie seu LinkHub 🚀</h2>
 
-  <a class="link" href="#">YouTube</a>
-  <a class="link" href="#">Instagram</a>
-  <a class="link" href="#">TikTok</a>
+  <input id="nameInput" placeholder="Seu nome">
+  <input id="bioInput" placeholder="Sua bio">
+  <input id="photoInput" placeholder="URL da sua foto">
+
+  <h3>Adicionar Link</h3>
+  <input id="linkName" placeholder="Nome do link">
+  <input id="linkURL" placeholder="URL do link">
+  <button onclick="addLink()">Adicionar</button>
+
+  <button onclick="saveProfile()">Salvar Perfil</button>
+
+  <hr>
+
+  <div id="profilePreview"></div>
 </div>
+
+<script>
+let links = [];
+
+function addLink() {
+  const name = document.getElementById("linkName").value;
+  const url = document.getElementById("linkURL").value;
+
+  if(name && url){
+    links.push({name, url});
+    document.getElementById("linkName").value = "";
+    document.getElementById("linkURL").value = "";
+    renderProfile();
+  }
+}
+
+function saveProfile(){
+  const profile = {
+    name: document.getElementById("nameInput").value,
+    bio: document.getElementById("bioInput").value,
+    photo: document.getElementById("photoInput").value,
+    links: links
+  };
+
+  localStorage.setItem("linkhubProfile", JSON.stringify(profile));
+  alert("Perfil salvo!");
+}
+
+function loadProfile(){
+  const saved = localStorage.getItem("linkhubProfile");
+  if(saved){
+    const profile = JSON.parse(saved);
+    document.getElementById("nameInput").value = profile.name;
+    document.getElementById("bioInput").value = profile.bio;
+    document.getElementById("photoInput").value = profile.photo;
+    links = profile.links || [];
+    renderProfile();
+  }
+}
+
+function renderProfile(){
+  const preview = document.getElementById("profilePreview");
+  preview.innerHTML = "";
+
+  const name = document.getElementById("nameInput").value;
+  const bio = document.getElementById("bioInput").value;
+  const photo = document.getElementById("photoInput").value;
+
+  if(photo){
+    preview.innerHTML += `<img src="${photo}">`;
+  }
+
+  preview.innerHTML += `<h2>${name}</h2>`;
+  preview.innerHTML += `<p>${bio}</p>`;
+
+  links.forEach(link=>{
+    preview.innerHTML += `<a class="link" href="${link.url}" target="_blank">${link.name}</a>`;
+  });
+}
+
+window.onload = loadProfile;
+</script>
 
 </body>
 </html>
